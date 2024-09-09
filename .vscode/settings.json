@@ -1,0 +1,5 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "explorer.compactFolders": false,
+    "java.compile.nullAnalysis.mode": "automatic"
+}
