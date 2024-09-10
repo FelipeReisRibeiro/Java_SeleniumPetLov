@@ -1,38 +1,35 @@
 package br.com.rocketskills.petlov;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.Duration;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
 
 class Cadastro {
 
+
 	@Test
-	@DisplayName("Deve Poder cadastrar um ponto de doação")
+	@DisplayName("Deve poder cadastrar um ponto de doação")
 	void createPoint() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
-		driver.get("https://petlov.vercel.app/signup");
+		open("https://petlov.vercel.app/signup");
+		$("h1").shouldHave(text("Cadastro de ponto de doação"));
 
-		WebElement title = driver.findElement(By.cssSelector("h1"));
+		$("input[placeholder='Nome do ponto de doação']").setValue("SantosPoint");
+		$("input[name=email]").setValue("felipe@gmail.com");
+		$("input[name=cep]").setValue("04534011");
+		$("input[value='Buscar CEP']").click();
+		$("input[name='addressNumber']").setValue("77");
+		$("input[name='addressDetails']").setValue("casa 01");
+		$(By.xpath("//span[text()=\"Cachorros\"]/..")).click();
+		$(".button-register").click();
 
-		Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-		wait.until(d -> title.isDisplayed());
+		String target = "Seu ponto de doação foi adicionado com sucesso. Juntos, podemos criar um mundo onde todos os animais recebam o amor e cuidado que merecem.";
 
-
-		assertEquals("Conectando corações, mudando vidas!", title.getText(), "Verificando o Slogan");
-		
-		driver.close();
+		$("#success-page p").shouldHave(text(target));
+	
 	}
 }
